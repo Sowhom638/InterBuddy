@@ -1,0 +1,472 @@
+// src/features/vapi/components/Agent.scss
+
+// =============================================================================
+// DESIGN TOKENS - EXACT match with interview.scss
+// =============================================================================
+:root {
+  // Backgrounds
+  --bg-gradient-primary: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+  --bg-glass: rgba(26, 31, 39, 0.6);
+  --bg-glass-strong: rgba(26, 31, 39, 0.85);
+  
+  // Borders
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color-hover: rgba(225, 3, 77, 0.3);
+  --border-radius-xl: 1.5rem;
+  --border-radius-lg: 1rem;
+  --border-radius-md: 0.75rem;
+  
+  // Colors - EXACT from interview.scss
+  --color-text-primary: whitesmoke;
+  --color-text-secondary: #8892b0;
+  --color-text-muted: #5a6a7a;
+  --color-accent-pink: #e1034d;
+  --color-accent-purple: #a855f7;
+  --color-accent-teal: #12A594;
+  --color-accent-emerald: #10b981;
+  --color-danger: #ff4444;
+  --color-warning: #f59e0b;
+  
+  // Gradients - EXACT from interview.scss
+  --gradient-accent: linear-gradient(135deg, var(--color-accent-pink) 0%, var(--color-accent-purple) 100%);
+  --gradient-accent-reverse: linear-gradient(135deg, var(--color-accent-purple) 0%, var(--color-accent-pink) 100%);
+  --gradient-avatar: linear-gradient(135deg, var(--color-accent-pink) 0%, var(--color-accent-purple) 100%);
+  
+  // Shadows
+  --shadow-sm: 0 4px 12px rgba(18, 165, 148, 0.3);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 6px 16px rgba(18, 165, 148, 0.4);
+  
+  // Transitions
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  
+  // Z-index
+  --z-floating: 1000;
+}
+
+// =============================================================================
+// MIXINS - From interview.scss
+// =============================================================================
+@mixin glass-card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  backdrop-filter: blur(10px);
+}
+
+@mixin custom-scrollbar($thumb-gradient: var(--gradient-accent)) {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-gradient;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-purple);
+  }
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent-pink) transparent;
+}
+
+@mixin pulse-animation($duration: 2s) {
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1.3);
+      opacity: 0;
+    }
+  }
+  animation: pulse-ring $duration cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@mixin breathe-animation {
+  @keyframes breathe {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+  animation: breathe 3s ease-in-out infinite;
+}
+
+// =============================================================================
+// AGENT WIDGET STYLES
+// =============================================================================
+.agent-widget {
+  bottom: 24px;
+  right: 24px;
+  z-index: var(--z-floating);
+  font-family: 'Arial', sans-serif;
+  
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    max-width: 400px;
+    width: 90vw;
+  }
+  
+  // ===========================================================================
+  // AVATAR CARD
+  // ===========================================================================
+  &__avatar-card {
+    @include glass-card;
+    border-radius: var(--border-radius-xl);
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent
+      );
+    }
+  }
+  
+  &__avatar-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &--speaking {
+      @include breathe-animation;
+    }
+  }
+  
+  &__avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--gradient-avatar);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(225, 3, 77, 0.4);
+    position: relative;
+    z-index: 2;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  &__avatar-icon {
+    width: 60px;
+    height: 60px;
+    color: var(--color-text-primary);
+    opacity: 0.9;
+  }
+  
+  &__avatar-ring {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent-teal);
+    opacity: 0;
+    z-index: 1;
+    
+    &--1 {
+      @include pulse-animation(2s);
+      animation-delay: 0s;
+    }
+    
+    &--2 {
+      @include pulse-animation(2s);
+      animation-delay: 1s;
+    }
+  }
+  
+  &__brand {
+    color: var(--color-text-primary);
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin: 0;
+    // Using exact gradient from interview.scss section headers
+    background: linear-gradient(135deg, var(--color-accent-pink) 0%, var(--color-accent-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  // ===========================================================================
+  // SUBTITLE CARD - Shows last transcribed message
+  // ===========================================================================
+  &__subtitle-card {
+    @include glass-card;
+    border-radius: var(--border-radius-lg);
+    padding: 1rem 2rem;
+    width: 100%;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-normal);
+    border: 1px solid var(--border-color);
+    
+    &:hover {
+      border-color: var(--border-color-hover);
+    }
+  }
+  
+  &__subtitle {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+  
+  // ===========================================================================
+  // CALL/END TOGGLE BUTTON
+  // ===========================================================================
+  &__toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    background: green;
+    color: var(--color-text-primary);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-accent);
+      opacity: 0;
+      transition: opacity var(--transition-normal);
+      z-index: 0;
+    }
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border-color-hover);
+      
+      &::before {
+        opacity: 0.1;
+      }
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+    
+    &--active {
+      background: rgba(225, 3, 77, 0.2);
+      border-color: var(--color-accent-pink);
+      color: var(--color-text-primary);
+      
+      &:hover {
+        background: rgba(225, 3, 77, 0.3);
+        box-shadow: 0 0 40px rgba(225, 3, 77, 0.4);
+        
+        &::before {
+          opacity: 0.2;
+        }
+      }
+    }
+    
+    .agent-widget__toggle-icon,
+    .agent-widget__toggle-text {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .agent-widget__toggle-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  
+  // ===========================================================================
+  // HIDDEN TRANSCRIPT
+  // ===========================================================================
+  &__transcript-hidden {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  
+  &__transcript-item {
+    margin-bottom: 0.5rem;
+    
+    strong {
+      color: var(--color-accent-teal);
+    }
+  }
+}
+
+// =============================================================================
+// RESPONSIVE BREAKPOINTS - Match interview.scss
+// =============================================================================
+@media (max-width: 968px) {
+  .agent-widget {
+    bottom: 20px;
+    right: 20px;
+    
+    &__avatar-card {
+      padding: 2.5rem 1.5rem;
+    }
+    
+    &__avatar {
+      width: 100px;
+      height: 100px;
+    }
+    
+    &__avatar-icon {
+      width: 50px;
+      height: 50px;
+    }
+    
+    &__brand {
+      font-size: 1.5rem;
+    }
+    
+    &__subtitle-card {
+      padding: 1rem 1.5rem;
+    }
+    
+    &__subtitle {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .agent-widget {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    
+    &__container {
+      width: 100%;
+      max-width: 100%;
+    }
+    
+    &__avatar-card {
+      padding: 2rem 1.5rem;
+      border-radius: var(--border-radius-lg);
+    }
+    
+    &__avatar-wrapper {
+      width: 120px;
+      height: 120px;
+    }
+    
+    &__avatar {
+      width: 100px;
+      height: 100px;
+    }
+    
+    &__avatar-icon {
+      width: 45px;
+      height: 45px;
+    }
+    
+    &__brand {
+      font-size: 1.25rem;
+    }
+    
+    &__subtitle-card {
+      padding: 0.875rem 1.5rem;
+      min-height: 50px;
+    }
+    
+    &__subtitle {
+      font-size: 0.875rem;
+    }
+    
+    &__toggle-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 1rem 2rem;
+    }
+  }
+}
+
+// =============================================================================
+// ACCESSIBILITY
+// =============================================================================
+@media (prefers-reduced-motion: reduce) {
+  .agent-widget {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+.agent-widget {
+  button:focus-visible {
+    outline: 2px solid var(--color-accent-purple);
+    outline-offset: 2px;
+  }
+}
+
+// =============================================================================
+// ANIMATIONS
+// =============================================================================
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.agent-widget__container {
+  animation: slideUp 0.5s ease-out;
+}
