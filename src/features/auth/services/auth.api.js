@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND,
+  baseURL: `${import.meta.env.VITE_BACKEND}`,
   withCredentials: true, // withCredentials: true is used for accessing cookies
 });
 export async function googleRegister({ username, email, picture }) {
