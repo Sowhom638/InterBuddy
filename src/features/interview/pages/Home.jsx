@@ -1,5 +1,5 @@
 // Home.jsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaSuitcase  } from "react-icons/fa";
 import { IoIosCloudUpload } from "react-icons/io";
@@ -9,16 +9,12 @@ import Header from "../../auth/components/Header";
 import { MdArrowCircleRight } from "react-icons/md";
 
 function Home() {
-  const { loading, generateReport, getReports } = useInterview();
+  const { loading, generateReport } = useInterview();
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const resumeInputRef = useRef();
   const navigate = useNavigate();
-  useEffect(()=>{
-    getReports();
-  },[])
-  // 👈 Helper to handle file selection (from click or drag)
   const handleFileSelect = (file) => {
     // Optional: validate file
     if (!file) return;
@@ -40,25 +36,36 @@ function Home() {
     setSelectedFile(file); // 👈 Store in state
   };
 
-  async function handleGenerateReport(e) {
+   async function handleGenerateReport(e) {
     e.preventDefault();
 
-    // Use file from state (more reliable than ref)
     const resumeFile = selectedFile;
     if (!resumeFile) {
       alert("Please upload your resume.");
       return;
     }
 
-    const data = await generateReport({
-      jobDescription,
-      selfDescription,
-      resumeFile,
-    });
+    try {
+      console.log("🚀 Generating report...");
+      const data = await generateReport({
+        jobDescription,
+        selfDescription,
+        resumeFile,
+      });
 
-    const interviewId = data?._id;
+      console.log("✅ Report generated:", data);
+      const interviewId = data?._id;
 
-    navigate(`/interview/${interviewId}`);
+      if (!interviewId) {
+        throw new Error("No interview ID returned from server");
+      }
+
+      navigate(`/interview/${interviewId}`);
+    } catch (error) {
+      console.error("❌ Failed to generate report:", error);
+      alert("Failed to generate report. Check console for details.");
+      // Don't navigate on error!
+    }
   }
 
   if (loading) {

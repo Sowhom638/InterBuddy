@@ -25,7 +25,11 @@ export const useInterview = () => {
       });
       setReport(response?.interviewReport);
     } catch (error) {
-      console.log(error);
+      console.error("❌ Generate Report Failed:");
+      console.error("  - Message:", error.response?.data?.message || error.message);
+      console.error("  - Status:", error.response?.status);
+      console.error("  - Data:", error.response?.data);
+      throw error; // Re-throw so Home.jsx can handle it
     } finally {
       setLoading(false);
     }
