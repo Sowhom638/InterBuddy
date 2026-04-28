@@ -74,6 +74,7 @@ function Home() {
         <Header />
         <div className="loading-container">
           <div className="spinner" />
+          Wait while preparing your interview plan
         </div>
       </main>
     );
