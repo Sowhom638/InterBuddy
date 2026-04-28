@@ -248,10 +248,10 @@ const LandingPage = () => {
               <div className="cta__actions">
                 {
                   user ? <button
-                  onClick={()=>navigate('/')}
+                  onClick={()=>navigate('/interviewCall')}
                   className="btn btn--primary btn--xlarge"
                 >
-                  Generate Interview Report
+                  Try AI mock interviewing
                   <IoIosArrowForward className="btn__icon" />
                 </button> : <button
                   onClick={login}
