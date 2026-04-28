@@ -1,4 +1,38 @@
 // home.scss
+.loading {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 80px);
+    gap: 1.5rem;
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(225, 3, 77, 0.2);
+      border-top-color: #e1034d;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    p {
+      color: #8892b0;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .home {
   width: 100%;
   position: relative;

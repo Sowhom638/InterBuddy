@@ -70,8 +70,11 @@ function Home() {
 
   if (loading) {
     return (
-      <main>
-        <h1>Loading your interview plan...</h1>
+      <main className="loading">
+        <Header />
+        <div className="loading-container">
+          <div className="spinner" />
+        </div>
       </main>
     );
   }
