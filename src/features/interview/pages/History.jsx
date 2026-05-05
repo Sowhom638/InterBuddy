@@ -67,7 +67,7 @@ function History() {
                     </p>
                     <p
                       className={`match-score ${
-                        report?.matchScore >= 80
+                        report?.matchScore >= 90
                           ? "high"
                           : report?.matchScore >= 60
                           ? "medium"
